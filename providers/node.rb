@@ -31,7 +31,7 @@ action :before_deploy do
 
   new_resource.environment['NODE_ENV'] = new_resource.environment_name
 
-  new_resource.restart_command "/etc/init.d/#{new_resource.name} hup" if !new_resource.restart_command
+  new_resource.restart_command "sudo /etc/init.d/#{new_resource.name} hup" if !new_resource.restart_command
 
 end
 
