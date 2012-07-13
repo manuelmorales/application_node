@@ -19,3 +19,5 @@
 include Chef::Resource::ApplicationBase
 
 attribute :npm, :kind_of => [NilClass, TrueClass, FalseClass], :default => true
+attribute :nodejs_version, :kind_of => [NilClass, String], :default => nil
+attribute :nodejs_src_url, :kind_of => [NilClass, String], :default => nil

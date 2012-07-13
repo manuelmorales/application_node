@@ -18,7 +18,10 @@
 
 action :before_compile do
 
-  include_recipe "nodejs"
+  node['nodejs'] ||= {}
+  node['nodejs']['version'] = new_resource.nodejs_version if new_resource.nodejs_version
+  node['nodejs']['src_url'] = new_resource.nodejs_src_url if new_resource.nodejs_src_url
+  run_context.include_recipe "nodejs::install_from_source"
 
   new_resource.environment.update({
     "NODE_ENV" => new_resource.environment_name,
@@ -38,11 +41,11 @@ end
 action :before_migrate do
 
   if new_resource.npm
-    Chef::Log.info "Running npm install"
+    Chef::Log.info "Running npm install in #{new_resource.release_path} as #{new_resource.owner} with #{new_resource.environment.inspect}"
     execute "npm install" do
       cwd new_resource.release_path
       user new_resource.owner
-      environment new_resource.environment
+      environment new_resource.environment.merge({'HOME' => "/home/#{new_resource.owner}"})
     end
   end
 
