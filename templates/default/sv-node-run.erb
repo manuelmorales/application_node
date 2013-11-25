@@ -3,4 +3,5 @@
 cd <%= @options[:app].path %>/current
 
 exec 2>&1
+ulimit -n 65536
 exec chpst -u <%= @options[:app].owner %>:<%= @options[:app].group %> sudo node app.js
